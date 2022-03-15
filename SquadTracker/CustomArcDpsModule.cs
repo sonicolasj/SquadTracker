@@ -10,14 +10,29 @@ using Blish_HUD.ArcDps.Models;
 
 namespace Torlando.SquadTracker
 {
-    class ArcDpsEventsParser : IDisposable
+    interface ICustomArcDpsModule
+    {
+        ICollection<CustomArcDpsModule.Player> GetPlayers();
+
+        event EventHandler PlayerJoined;
+        event EventHandler PlayerLeft;
+        event EventHandler PlayerChangedCharacter;
+        event EventHandler CharacterChangedProfession;
+    }
+
+    class CustomArcDpsModule : ICustomArcDpsModule, IDisposable
     {
         private readonly IArcDpsEventsProvider EventsProvider;
 
         private readonly List<Player> Players = new List<Player>();
         private readonly List<Character> Characters = new List<Character>();
 
-        public ArcDpsEventsParser(IArcDpsEventsProvider eventsProvider)
+        public event EventHandler? PlayerJoined;
+        public event EventHandler? PlayerLeft;
+        public event EventHandler? PlayerChangedCharacter;
+        public event EventHandler? CharacterChangedProfession;
+
+        public CustomArcDpsModule(IArcDpsEventsProvider eventsProvider)
         {
             this.EventsProvider = eventsProvider;
             this.EventsProvider.RawCombatEvent += EventsProvider_RawCombatEvent;
@@ -115,6 +130,11 @@ namespace Torlando.SquadTracker
                     self: src.Self
                 );
             }
+        }
+
+        public ICollection<Player> GetPlayers()
+        {
+            return this.Players;
         }
 
         private interface IArcDPSEvent

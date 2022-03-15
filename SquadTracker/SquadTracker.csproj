@@ -65,7 +65,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArcDpsEventsParser.cs" />
+    <Compile Include="CustomArcDpsModule.cs" />
     <Compile Include="ArcDpsEventsProvider.cs" />
     <Compile Include="Domain.cs" />
     <Compile Include="Module.cs" />
